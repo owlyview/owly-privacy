@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Owly View - Turn Your Old Phone Into a Baby Monitor</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-main: #0c0a09;
+  --bg-surface: rgba(255, 255, 255, 0.03);
+  --bg-surface-hover: rgba(255, 255, 255, 0.05);
+  --primary-light: #fcd34d;
+  --primary: #f59e0b;
+  --primary-dark: #d97706;
+  --primary-glow: rgba(245, 158, 11, 0.15);
+  --text-main: #fef3c7;
+  --text-muted: rgba(254, 243, 199, 0.6);
+  --text-dim: rgba(254, 243, 199, 0.4);
+  --success: #34d399;
+  --success-bg: rgba(52, 211, 153, 0.1);
+  --danger: #f87171;
+  --danger-bg: rgba(248, 113, 113, 0.1);
+  --info: #60a5fa;
+  --info-bg: rgba(96, 165, 250, 0.1);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 8px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); overflow-x: hidden; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+.hero { min-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 24px 40px; background: radial-gradient(circle at 50% 0%, rgba(245,158,11,0.12) 0%, var(--bg-main) 60%); position: relative; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 24px; animation: fadeInDown 0.8s ease; backdrop-filter: blur(8px); }
+.hero h1 { font-size: clamp(32px, 6vw, 56px); font-weight: 900; line-height: 1.2; margin-bottom: 24px; letter-spacing: -0.03em; animation: fadeInUp 1s ease 0.2s both; }
+.hero h1 .highlight { background: linear-gradient(135deg, var(--primary-light), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero p { font-size: 16px; color: var(--text-muted); max-width: 520px; line-height: 1.8; animation: fadeInUp 1s ease 0.4s both; }
+@media (max-width: 600px) { .hero { min-height: 80vh; padding: 60px 20px 40px; } .hero p { font-size: 14px; } }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; padding: 0 24px; max-width: 900px; margin: -40px auto 80px; position: relative; z-index: 10; }
+@media (max-width: 600px) { .stats { gap: 12px; padding: 0 16px; margin-bottom: 60px; grid-template-columns: repeat(2, 1fr); } }
+.stat-card { background: rgba(20, 16, 14, 0.8); backdrop-filter: blur(12px); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 32px 24px; text-align: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+.stat-card:hover { transform: translateY(-8px); border-color: rgba(245,158,11,0.3); box-shadow: 0 20px 40px rgba(245,158,11,0.08); }
+.stat-number { font-size: 40px; font-weight: 900; background: linear-gradient(135deg, var(--text-main), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; margin-bottom: 8px; letter-spacing: -0.02em; }
+@media (max-width: 600px) { .stat-number { font-size: 32px; } }
+.stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+@media (max-width: 600px) { .stat-label { font-size: 11px; } }
+.section { padding: 60px 24px; max-width: 900px; margin: 0 auto; }
+@media (max-width: 600px) { .section { padding: 40px 16px; } }
+.section-title { font-size: 28px; font-weight: 900; text-align: center; margin-bottom: 48px; letter-spacing: -0.02em; }
+@media (max-width: 600px) { .section-title { font-size: 22px; margin-bottom: 32px; } }
+.section-title .emoji { font-size: 40px; display: block; margin-bottom: 16px; }
+.section-subtitle { font-size: 15px; color: var(--text-muted); font-weight: 400; display: block; margin-top: 12px; }
+@media (max-width: 600px) { .section-subtitle { font-size: 13px; } }
+.comparison-wrapper { overflow-x: auto; padding-bottom: 16px; margin: 0 -12px; padding: 0 12px; position: relative; }
+.comparison-wrapper::after { content: '← Scroll horizontally →'; display: none; text-align: center; font-size: 11px; color: var(--text-dim); margin-top: 8px; font-weight: 500; }
+@media (max-width: 750px) { .comparison-wrapper::after { display: block; } }
+.comparison { background: var(--bg-surface); border-radius: var(--radius-lg); border: 1px solid var(--border-color); min-width: 700px; }
+.comp-header { display: grid; grid-template-columns: 2fr 1.2fr 1fr 1fr 1fr; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--border-color); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+.comp-header > div { padding: 20px 16px; font-size: 13px; font-weight: 700; text-align: center; }
+.comp-header > div:first-child { text-align: left; color: var(--text-muted); }
+.comp-header .owly-col { background: var(--primary-glow); color: var(--primary); font-size: 14px; font-weight: 900; border-bottom: 2px solid var(--primary); }
+.comp-row { display: grid; grid-template-columns: 2fr 1.2fr 1fr 1fr 1fr; border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.2s; }
+.comp-row:hover { background: var(--bg-surface-hover); }
+.comp-row:last-child { border-bottom: none; }
+.comp-row > div { padding: 16px; font-size: 13px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: 500; }
+.comp-row > div:first-child { align-items: flex-start; color: var(--text-main); font-weight: 400; flex-direction: row; justify-content: flex-start; }
+.comp-row .owly-cell { background: rgba(245,158,11,0.03); font-weight: 700; }
+.sub-text { font-size: 11px; color: var(--text-dim); margin-top: 4px; font-weight: 400; }
+.check { color: var(--success); font-size: 16px; font-weight: 900; }
+.cross { color: var(--text-dim); font-size: 14px; }
+.paid { color: var(--danger); font-size: 12px; font-weight: 700; }
+.comp-category { display: grid; grid-template-columns: 1fr; background: rgba(255,255,255,0.02); }
+.comp-category > div { padding: 12px 20px; font-size: 12px; font-weight: 900; color: var(--text-muted); letter-spacing: 0.05em; }
+.glass-box { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 48px 32px; }
+@media (max-width: 600px) { .glass-box { padding: 32px 20px; } }
+.box-title { font-size: 22px; font-weight: 900; text-align: center; margin-bottom: 12px; }
+@media (max-width: 600px) { .box-title { font-size: 18px; } }
+.box-desc { text-align: center; font-size: 14px; color: var(--text-muted); margin-bottom: 32px; line-height: 1.7; }
+@media (max-width: 600px) { .box-desc { font-size: 13px; margin-bottom: 24px; } }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+.item-card { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-md); padding: 24px; text-align: center; }
+.icon-wrapper { font-size: 32px; margin-bottom: 16px; display: inline-block; }
+.item-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); }
+.item-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+.badge-pill { font-size: 11px; font-weight: 700; display: inline-block; padding: 6px 16px; border-radius: 50px; margin-bottom: 16px; }
+.badge-green { background: var(--success-bg); color: var(--success); border: 1px solid rgba(52,211,153,0.2); }
+.badge-yellow { background: var(--primary-glow); color: var(--primary); border: 1px solid rgba(245,158,11,0.2); }
+.badge-purple { background: rgba(168,85,247,0.1); color: #c084fc; border: 1px solid rgba(168,85,247,0.2); }
+.info-tip { background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 24px; margin-top: 24px; text-align: center; border: 1px dashed var(--border-color); }
+.info-tip p { font-size: 14px; color: var(--text-muted); }
+.info-tip strong { color: var(--text-main); font-weight: 700; }
+.features { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.feature-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 28px 24px; transition: all 0.3s; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+.feature-card:hover { border-color: rgba(245,158,11,0.3); background: var(--bg-surface-hover); transform: translateY(-4px); }
+.feature-card .icon-wrapper { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; font-size: 24px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+.feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.e2e-flow { display: flex; flex-direction: column; gap: 24px; margin: 32px 0; background: rgba(0,0,0,0.2); padding: 32px 20px; border-radius: var(--radius-md); }
+.e2e-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+@media (max-width: 500px) { .e2e-row { gap: 6px; } .e2e-node { padding: 8px 10px; font-size: 11px; } .e2e-row .label { width: 70px; font-size: 11px; } }
+.e2e-row .label { font-size: 12px; font-weight: 900; width: 80px; text-align: right; flex-shrink: 0; }
+.label.good { color: var(--success); }
+.label.bad { color: var(--danger); }
+.e2e-node { padding: 10px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; }
+.e2e-node.phone { background: var(--info-bg); border: 1px solid rgba(96,165,250,0.2); color: #93c5fd; }
+.e2e-node.server { background: var(--danger-bg); border: 1px solid rgba(248,113,113,0.2); color: #fca5a5; }
+.e2e-node.lock { background: var(--success-bg); border: 1px solid rgba(52,211,153,0.2); color: #6ee7b7; }
+.e2e-arrow { color: var(--text-dim); font-size: 16px; }
+.pros-cons { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 24px; }
+.pros-card, .cons-card { border-radius: var(--radius-lg); padding: 32px 28px; }
+.pros-card { background: linear-gradient(180deg, rgba(16,185,129,0.05), transparent); border: 1px solid rgba(16,185,129,0.15); }
+.cons-card { background: linear-gradient(180deg, rgba(248,113,113,0.05), transparent); border: 1px solid rgba(248,113,113,0.15); }
+.pros-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--success); display: flex; align-items: center; gap: 8px; }
+.cons-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--danger); display: flex; align-items: center; gap: 8px; }
+.pros-card li, .cons-card li { font-size: 14px; line-height: 1.6; color: var(--text-muted); list-style: none; margin-bottom: 14px; display: flex; align-items: flex-start; gap: 10px; }
+@media (max-width: 600px) { .pros-card li, .cons-card li { font-size: 13px; } }
+.pros-card li::before { content: '✅'; font-size: 12px; margin-top: 2px; }
+.cons-card li::before { content: '⚠️'; font-size: 12px; margin-top: 2px; }
+.cta { text-align: center; padding: 80px 24px 100px; }
+.cta h2 { font-size: 28px; font-weight: 900; margin-bottom: 12px; letter-spacing: -0.02em; }
+@media (max-width: 600px) { .cta h2 { font-size: 22px; } }
+.cta p { font-size: 15px; color: var(--text-muted); line-height: 1.7; }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-badge">🦉 Your old phone deserves a second life</div>
+  <h1>Watch your baby<br>for <span class="highlight">$0</span></h1>
+  <p>No subscriptions. No servers. No extra devices.<br>Two smartphones is all you need for a complete AI baby monitor.</p>
+</section>
+
+<div class="stats">
+  <div class="stat-card"><span class="stat-number">$0</span><span class="stat-label">Device + Subscription</span></div>
+  <div class="stat-card"><span class="stat-number">P2P</span><span class="stat-label">No Server, Direct Stream</span></div>
+  <div class="stat-card"><span class="stat-number">E2E</span><span class="stat-label">End-to-End Encrypted</span></div>
+  <div class="stat-card"><span class="stat-number">AI</span><span class="stat-label">Face Tracking + Sound</span></div>
+</div>
+
+<section class="section">
+  <div class="section-title"><span class="emoji">⚔️</span>How Does It Compare?<span class="section-subtitle">Spare phone app vs dedicated camera — what's the difference?</span></div>
+  <div class="comparison-wrapper">
+    <div class="comparison">
+      <div class="comp-header">
+        <div>Feature</div>
+        <div class="owly-col">🦉 Owly View</div>
+        <div>App A<div class="sub-text">Phone app</div></div>
+        <div>Cam B<div class="sub-text">Smart cam</div></div>
+        <div>Cam C<div class="sub-text">Budget cam</div></div>
+      </div>
+
+      <div class="comp-category"><div>💰 COST</div></div>
+      <div class="comp-row">
+        <div>Upfront Cost</div>
+        <div class="owly-cell check">$0</div>
+        <div class="check">$0</div>
+        <div class="paid">~$70</div>
+        <div class="paid">~$30</div>
+      </div>
+      <div class="comp-row">
+        <div>Monthly Fee</div>
+        <div class="owly-cell check">Free</div>
+        <div class="paid">$4.99+</div>
+        <div class="check">None</div>
+        <div class="paid">$3.99+<div class="sub-text">Cloud</div></div>
+      </div>
+
+      <div class="comp-category"><div>🔒 SECURITY</div></div>
+      <div class="comp-row">
+        <div>Video Transmission</div>
+        <div class="owly-cell check">P2P Direct</div>
+        <div class="paid">Via Server</div>
+        <div class="paid">Cloud</div>
+        <div class="paid">Cloud</div>
+      </div>
+      <div class="comp-row">
+        <div>End-to-End Encryption</div>
+        <div class="owly-cell check">✓</div>
+        <div class="cross">✗</div>
+        <div class="cross">✗</div>
+        <div class="cross">✗</div>
+      </div>
+
+      <div class="comp-category"><div>🧠 AI FEATURES</div></div>
+      <div class="comp-row">
+        <div>AI Face Tracking</div>
+        <div class="owly-cell check">✓</div>
+        <div class="cross">✗</div>
+        <div class="cross">✗</div>
+        <div class="paid">Paid</div>
+      </div>
+      <div class="comp-row">
+        <div>Blanket Cover Detection</div>
+        <div class="owly-cell check">✓</div>
+        <div class="cross">✗</div>
+        <div class="cross">✗</div>
+        <div class="cross">✗</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="glass-box">
+    <h2 class="box-title">🌙 How Does It Work at Night?</h2>
+    <p class="box-desc">The AI automatically adapts to your baby's sleep environment.</p>
+    
+    <div class="grid-3">
+      <div class="item-card">
+        <span class="badge-pill badge-green">☀️ Bright</span>
+        <span class="icon-wrapper">🟢</span>
+        <h4>Precision Tracking</h4>
+        <p>AI detects and tracks facial landmarks (eyes, nose, mouth, ears) in real time.</p>
+      </div>
+      <div class="item-card">
+        <span class="badge-pill badge-yellow">🌥️ Night Light</span>
+        <span class="icon-wrapper">🟡</span>
+        <h4>Silhouette Mode</h4>
+        <p>Brightness and contrast are boosted automatically. A dim night light is enough for tracking.</p>
+      </div>
+      <div class="item-card">
+        <span class="badge-pill badge-purple">🌙 Total Darkness</span>
+        <span class="icon-wrapper">🟣</span>
+        <h4>Audio Guard</h4>
+        <p>Switches to sound-only analysis. Detects crying, screaming, and coughing by frequency patterns.</p>
+      </div>
+    </div>
+    
+    <div class="info-tip">
+      <p>💡 With an <strong>amber night light</strong>, you can use Owly View at night too!<br>It won't disturb your baby's sleep, and the AI can still recognize faces.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="section-title"><span class="emoji">✨</span>Key Features</div>
+  <div class="features">
+    <div class="feature-card">
+      <div class="icon-wrapper">👶</div>
+      <h3>Real-Time Face Tracking</h3>
+      <p>AI tracks your baby's face position and alerts you instantly if they move out of the safe zone.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon-wrapper">🔊</div>
+      <h3>Smart Sound Analysis</h3>
+      <p>Not just noise detection. Distinguishes between crying, screaming, coughing, and babbling by frequency.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon-wrapper">🎬</div>
+      <h3>Auto Event Recording</h3>
+      <p>Automatically records 15-second clips when an event is detected. Saved locally on the hub phone.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon-wrapper">⚠️</div>
+      <h3>Blanket Cover Alert</h3>
+      <p>Analyzes AI confidence patterns to warn you if a blanket may be covering your baby's face.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="glass-box">
+    <h2 class="box-title">🔐 What Is E2E Encryption?</h2>
+    <p class="box-desc">Video is encrypted on the hub phone and only decrypted on the viewer phone.<br>With no server in between, nobody can intercept your baby's video.</p>
+    
+    <div class="e2e-flow">
+      <div class="e2e-row">
+        <span class="label good">Owly View</span>
+        <span class="e2e-node phone">📱 Hub Phone</span>
+        <span class="e2e-arrow">→</span>
+        <span class="e2e-node lock">🔒 Encrypted</span>
+        <span class="e2e-arrow">→</span>
+        <span class="e2e-node phone">📱 Viewer Phone</span>
+      </div>
+      <div class="e2e-row" style="opacity: 0.6;">
+        <span class="label bad">Other Apps</span>
+        <span class="e2e-node phone">📱 Camera</span>
+        <span class="e2e-arrow">→</span>
+        <span class="e2e-node server">🖥️ Server (Decrypted)</span>
+        <span class="e2e-arrow">→</span>
+        <span class="e2e-node phone">📱 Viewer</span>
+      </div>
+    </div>
+    <p style="text-align:center; font-size:13px; color:var(--text-muted);">Owly View uses P2P communication — <strong style="color:var(--text-main);">there is no server at all.</strong><br>No server means nothing to hack.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="section-title"><span class="emoji">⚖️</span>An Honest Look</div>
+  <div class="pros-cons">
+    <div class="pros-card">
+      <h3>💪 Strengths</h3>
+      <ul>
+        <li>Completely free — no device cost, no subscription</li>
+        <li>P2P with full E2E encryption — maximum privacy</li>
+        <li>AI face tracking + blanket cover detection</li>
+        <li>Smart sound classification (cry, scream, cough)</li>
+        <li>Optional BLE sensor for temperature & humidity</li>
+      </ul>
+    </div>
+    <div class="cons-card">
+      <h3>📌 Limitations</h3>
+      <ul>
+        <li>Same Wi-Fi network required</li>
+        <li>No infrared night vision (night light recommended)</li>
+        <li>Hub phone should stay plugged in</li>
+        <li>Narrower field of view than dedicated cameras</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>🦉 Dig out that old phone from your drawer</h2>
+  <p>It might just be the best baby monitor you'll ever own.</p>
+</section>
+
+</body>
+</html>
