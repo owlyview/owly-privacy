@@ -23,6 +23,7 @@ table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px;
 th, td { padding: 8px 10px; border: 1px solid #451a03; text-align: left; color: #d4b896; }
 th { background: #451a03; color: #fcd34d; font-weight: 600; }
 .note { background: rgba(251, 191, 36, 0.05); border-left: 3px solid #fbbf24; padding: 10px 14px; margin: 12px 0; font-size: 13px; color: #d4b896; border-radius: 4px; }
+.highlight { background: rgba(251, 191, 36, 0.08); border-left: 3px solid #f59e0b; padding: 12px 14px; margin: 12px 0; font-size: 13px; color: #fde68a; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -84,14 +85,14 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 </div>
 <h1>Owly View</h1>
 <p class="subtitle">개인정보처리방침 / Privacy Policy</p>
-<p class="date">시행일 / Effective Date: 2026-05-09</p>
+<p class="date">시행일 / Effective Date: 2026-05-15</p>
 
 <!-- 한국어 -->
 <h2>📋 개인정보처리방침 (한국어)</h2>
 
 <div class="section">
 <h3>1. 수집하는 정보</h3>
-<p>Owly View가 직접 수집하는 정보는 최소한이며, 일부 정보는 제3자 광고 파트너에 의해 수집될 수 있습니다 (제4조 참조).</p>
+<p>Owly View가 직접 수집하는 정보는 최소한이며, 일부 정보는 제3자 광고 파트너에 의해 수집될 수 있습니다 (제5조 참조).</p>
 <p><strong>Owly View가 직접 수집:</strong></p>
 <ul>
 <li><strong>Firebase 익명 인증 ID:</strong> P2P 세션 식별용 무작위 ID. 실제 신원과 연결되지 않습니다.</li>
@@ -103,6 +104,7 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 <li>실명, 이메일, 전화번호 등 개인 식별 정보</li>
 <li>아기의 영상/음성 (P2P로만 전송, 서버에 도달하지 않음)</li>
 <li>건강, 금융, 연락처 데이터</li>
+<li>얼굴 인식 데이터, 생체 인식 정보, 신원 식별을 위한 얼굴 특징</li>
 </ul>
 </div>
 
@@ -117,7 +119,63 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 </div>
 
 <div class="section">
-<h3>3. 데이터 보관 및 삭제</h3>
+<h3>3. 얼굴 데이터 (Face Data) 처리</h3>
+<p>Owly View는 베이비 모니터링의 안전성을 높이기 위해 <strong>기기 내(on-device) 얼굴 감지 기술</strong>을 사용합니다. 얼굴 데이터 처리 방식에 대해 완전히 투명하게 안내합니다.</p>
+
+<div class="highlight">
+<strong>핵심 원칙:</strong> 모든 얼굴 감지 처리는 사용자의 허브(Hub) iPhone 내에서만 이루어지며, 어떠한 얼굴 데이터도 기기를 떠나지 않습니다.
+</div>
+
+<h3>3-1. 수집하는 얼굴 데이터</h3>
+<ul>
+<li>허브 폰의 카메라 영상에서 <strong>얼굴의 존재와 위치</strong>를 실시간으로 감지합니다.</li>
+<li>아기 얼굴이 화면에 보이는지, 또는 가려졌는지를 판단하기 위해 얼굴 영역의 좌표(Bounding Box)를 식별합니다.</li>
+<li>다음 정보는 <strong>수집/저장/처리하지 않습니다</strong>:
+  <ul>
+    <li>얼굴 인식 데이터 (개인 식별)</li>
+    <li>신원을 확인할 수 있는 얼굴 특징(facial features for identification)</li>
+    <li>지문, 홍채, 음성 등 어떠한 생체 인식 정보</li>
+    <li>얼굴 이미지 자체</li>
+  </ul>
+</li>
+</ul>
+
+<h3>3-2. 얼굴 데이터 사용 목적</h3>
+<p>얼굴 감지는 오직 다음 두 가지 안전 알림 기능을 위해서만 사용됩니다:</p>
+<ul>
+<li><strong>(1) 수면 안전 경보 (Sleep Safety Alert):</strong> 아기 얼굴이 이전에 보였다가 일정 시간 동안 감지되지 않으면 뷰어 폰에 경보가 전송됩니다. 임계값은 사용자가 설정할 수 있습니다 (motion sensitivity 설정).</li>
+<li><strong>(2) 얼굴 덮임 경보 (Face Cover Alert):</strong> 이불 등이 아기 얼굴을 덮은 것으로 판단되는 경우 뷰어 폰에 경보가 전송됩니다.</li>
+</ul>
+<p>이 두 가지가 앱에서 얼굴 감지의 <strong>유일한 용도</strong>입니다.</p>
+
+<h3>3-3. 제3자 공유</h3>
+<p>얼굴 데이터는 <strong>어떠한 제3자와도 공유되지 않습니다.</strong></p>
+<ul>
+<li>어떤 서버, 클라우드 서비스, 외부 시스템으로도 전송되지 않습니다.</li>
+<li>Firebase, AdMob 등 본 앱이 사용하는 제3자 서비스와도 공유되지 않습니다.</li>
+<li>분석, 광고, 통계 목적으로 사용되지 않습니다.</li>
+</ul>
+
+<h3>3-4. 저장 위치 및 보관 기간</h3>
+<ul>
+<li><strong>저장 위치:</strong> 처리 중 메모리(RAM)에만 존재합니다. 기기의 영구 저장소(파일 시스템, 데이터베이스, 사진 라이브러리)에 저장되지 않습니다.</li>
+<li><strong>보관 기간:</strong> 실질적으로 <strong>0 (zero retention)</strong>입니다. 카메라 프레임이 얼굴 존재 여부로 분석된 즉시 해당 데이터는 메모리에서 해제됩니다.</li>
+<li><strong>네트워크 전송:</strong> 없음. 어떤 형태로도 기기를 떠나지 않습니다.</li>
+</ul>
+
+<h3>3-5. 사용 기술</h3>
+<p>기기 내(on-device) 머신러닝 모델을 사용하여 얼굴 감지를 수행합니다. TensorFlow.js 프레임워크를 기반으로 하며, 모든 추론(inference)은 사용자의 iPhone에서 직접 실행됩니다. 얼굴 감지를 위해 어떠한 데이터도 외부 서버나 클라우드 AI 서비스로 전송되지 않습니다.</p>
+
+<h3>3-6. 사용자 통제권</h3>
+<ul>
+<li>얼굴 감지 기능은 앱 설정에서 <strong>언제든 비활성화</strong>할 수 있습니다 (AI 얼굴 추적 토글).</li>
+<li>비활성화 시 얼굴 감지가 완전히 중단되며, 관련 알림도 발생하지 않습니다.</li>
+<li>카메라 권한을 거부하거나 철회하면 얼굴 감지를 포함한 모든 영상 기능이 작동하지 않습니다.</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>4. 데이터 보관 및 삭제</h3>
 <table>
 <thead>
 <tr><th>데이터 종류</th><th>저장 위치</th><th>보관 기간</th></tr>
@@ -128,13 +186,14 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 <tr><td>15초 이벤트 녹화</td><td>기기 내</td><td>사용자 삭제 또는 앱 제거 시까지</td></tr>
 <tr><td>육아 상자 (수유/수면/약/성장)</td><td>기기 내</td><td>사용자 삭제 또는 앱 제거 시까지</td></tr>
 <tr><td>닉네임</td><td>기기 내</td><td>사용자 삭제 또는 앱 제거 시까지</td></tr>
+<tr><td><strong>얼굴 데이터</strong></td><td><strong>메모리(RAM)에만</strong></td><td><strong>실시간 처리 후 즉시 폐기 (보관 기간 0)</strong></td></tr>
 </tbody>
 </table>
 <p>로컬 데이터를 삭제하려면 앱을 제거하거나 육아 상자 → 데이터 관리 → 모든 기록 삭제를 사용하세요.</p>
 </div>
 
 <div class="section">
-<h3>4. 제3자 서비스 및 광고</h3>
+<h3>5. 제3자 서비스 및 광고</h3>
 <p><strong>(가) Google Firebase</strong></p>
 <ul>
 <li><strong>Firebase Authentication:</strong> 익명 사용자 ID 제공. 개인정보 없음.</li>
@@ -157,14 +216,14 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 </div>
 
 <div class="section">
-<h3>5. 아동 개인정보 보호</h3>
+<h3>6. 아동 개인정보 보호</h3>
 <p>본 앱은 13세 미만 아동을 대상으로 하지 않습니다. 사용자는 부모 또는 보호자입니다. 우리는 아동으로부터 개인정보를 수집하지 않습니다. 본 앱은 부모/보호자가 소유한 두 기기를 통해 영아를 모니터링하는 용도로 사용되며, 영아는 데이터 수집 측면에서 본 앱의 "사용자"가 아닙니다.</p>
 </div>
 
 <div class="section">
-<h3>6. 권한 안내</h3>
+<h3>7. 권한 안내</h3>
 <ul>
-<li><strong>카메라:</strong> 허브 폰에서 아기 영상 촬영</li>
+<li><strong>카메라:</strong> 허브 폰에서 아기 영상 촬영 및 기기 내 얼굴 감지</li>
 <li><strong>마이크:</strong> 소리 감지 (울음/비명/기침) 및 음성 전송</li>
 <li><strong>블루투스:</strong> 온습도 센서 연결 (Xiaomi LYWSD03MMC, 선택)</li>
 <li><strong>알림:</strong> 뷰어 폰에서의 이벤트 감지 알림</li>
@@ -175,7 +234,7 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 </div>
 
 <div class="section">
-<h3>7. 사용자의 권리</h3>
+<h3>8. 사용자의 권리</h3>
 <ul>
 <li>우리가 보유한 자신의 데이터에 접근할 권리</li>
 <li>자신의 데이터 삭제를 요청할 권리</li>
@@ -186,7 +245,7 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 </div>
 
 <div class="section">
-<h3>8. 문의</h3>
+<h3>9. 문의</h3>
 <p>개인정보 관련 문의는 아래로 연락해주세요.</p>
 <p>📧 <a href="mailto:owlyview@gmail.com">owlyview@gmail.com</a></p>
 </div>
@@ -198,7 +257,7 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 
 <div class="section">
 <h3>1. Information We Collect</h3>
-<p>Owly View collects minimal information directly. Some additional data may be collected by our third-party advertising partner (see Section 4).</p>
+<p>Owly View collects minimal information directly. Some additional data may be collected by our third-party advertising partner (see Section 5).</p>
 <p><strong>Directly collected by Owly View:</strong></p>
 <ul>
 <li><strong>Firebase Anonymous Authentication ID:</strong> A randomly generated identifier used solely as a P2P session token. Not linked to your real identity.</li>
@@ -210,6 +269,7 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 <li>Real name, email, phone number, or any personal identifying information</li>
 <li>Video or audio of your baby (transmitted P2P only and never reach our servers)</li>
 <li>Health, financial, or contact data</li>
+<li>Facial recognition data, biometric identifiers, or facial features for identification purposes</li>
 </ul>
 </div>
 
@@ -224,7 +284,63 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 </div>
 
 <div class="section">
-<h3>3. Data Retention and Deletion</h3>
+<h3>3. Face Data Processing</h3>
+<p>Owly View uses <strong>on-device face detection</strong> technology to enhance baby monitoring safety. We are committed to full transparency about how face data is handled.</p>
+
+<div class="highlight">
+<strong>Core principle:</strong> All face detection processing occurs entirely on the user's own Hub iPhone. No face data ever leaves the device.
+</div>
+
+<h3>3-1. What Face Data We Collect</h3>
+<ul>
+<li>We detect <strong>the presence and position of faces</strong> within the camera feed of the Hub phone in real-time.</li>
+<li>We identify the bounding box coordinates of the face area to determine whether the baby's face is visible or covered.</li>
+<li>We do <strong>NOT</strong> collect, store, or process:
+  <ul>
+    <li>Facial recognition data (for personal identification)</li>
+    <li>Facial features for identification purposes</li>
+    <li>Any biometric identifiers (including fingerprints, iris patterns, or voice prints)</li>
+    <li>Face images themselves</li>
+  </ul>
+</li>
+</ul>
+
+<h3>3-2. How Face Data Is Used</h3>
+<p>Face detection is used <strong>solely</strong> for the following two safety alert features:</p>
+<ul>
+<li><strong>(1) Sleep Safety Alert:</strong> If the baby's face was previously detected and is then no longer detected for a continuous period, an alert is sent to the Viewer phone. The threshold is user-configurable (via the motion sensitivity setting).</li>
+<li><strong>(2) Face Cover Alert:</strong> If the system determines that a blanket or other object may be covering the baby's face, an alert is sent to the Viewer phone.</li>
+</ul>
+<p>These are the <strong>only two uses</strong> of face detection in the app.</p>
+
+<h3>3-3. Third-Party Sharing</h3>
+<p>Face data is <strong>NEVER shared with any third party.</strong></p>
+<ul>
+<li>It is not transmitted to any server, cloud service, or external system.</li>
+<li>It is not shared with Firebase, AdMob, or any other third-party service used by this app.</li>
+<li>It is not used for analytics, advertising, or statistical purposes.</li>
+</ul>
+
+<h3>3-4. Storage Location and Retention Period</h3>
+<ul>
+<li><strong>Storage location:</strong> Face data exists only in volatile memory (RAM) during processing. It is never written to persistent storage (file system, database, photo library) on the device.</li>
+<li><strong>Retention period:</strong> Effectively <strong>ZERO (zero retention)</strong>. As soon as a camera frame is analyzed for face presence, the data is released from memory.</li>
+<li><strong>Network transmission:</strong> None. Face data never leaves the device in any form.</li>
+</ul>
+
+<h3>3-5. Technology Used</h3>
+<p>We use an on-device machine learning model based on the TensorFlow.js framework to perform face detection. All inference runs directly on the user's iPhone. No data is sent to any external server or cloud-based AI service for face detection purposes.</p>
+
+<h3>3-6. User Control</h3>
+<ul>
+<li>The face detection feature can be <strong>disabled at any time</strong> in the app settings (AI Face Tracking toggle).</li>
+<li>When disabled, face detection stops completely, and no related alerts are generated.</li>
+<li>If you deny or revoke camera permission, all video features including face detection will not function.</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>4. Data Retention and Deletion</h3>
 <table>
 <thead>
 <tr><th>Data Type</th><th>Storage Location</th><th>Retention</th></tr>
@@ -235,13 +351,14 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 <tr><td>15-second event clips</td><td>Your device only</td><td>Until you delete or uninstall</td></tr>
 <tr><td>Parenting Box (feeding/sleep/medication/growth)</td><td>Your device only</td><td>Until you delete or uninstall</td></tr>
 <tr><td>Nickname</td><td>Your device only</td><td>Until you delete or uninstall</td></tr>
+<tr><td><strong>Face data</strong></td><td><strong>RAM only (volatile)</strong></td><td><strong>Discarded immediately after real-time processing (zero retention)</strong></td></tr>
 </tbody>
 </table>
 <p>To delete locally stored data, uninstall the app or use Parenting Box → Data Management → Delete All Records.</p>
 </div>
 
 <div class="section">
-<h3>4. Third-Party Services and Advertising</h3>
+<h3>5. Third-Party Services and Advertising</h3>
 <p><strong>(a) Google Firebase</strong></p>
 <ul>
 <li><strong>Firebase Authentication:</strong> Provides anonymous user IDs. No personal info.</li>
@@ -264,14 +381,14 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 </div>
 
 <div class="section">
-<h3>5. Children's Privacy</h3>
+<h3>6. Children's Privacy</h3>
 <p>The App is not directed at children under 13. Users are parents and guardians. We do not knowingly collect any personal information from children. The App is used to monitor an infant via two devices owned by the parent/guardian; the infant is not a "user" of the App in any data-collection sense.</p>
 </div>
 
 <div class="section">
-<h3>6. Permissions</h3>
+<h3>7. Permissions</h3>
 <ul>
-<li><strong>Camera:</strong> Video capture on the Hub phone</li>
+<li><strong>Camera:</strong> Video capture on the Hub phone and on-device face detection</li>
 <li><strong>Microphone:</strong> Sound detection (cry/scream/cough) and audio transmission</li>
 <li><strong>Bluetooth:</strong> Optional connection to a temperature/humidity sensor (Xiaomi LYWSD03MMC)</li>
 <li><strong>Notifications:</strong> Event detection alerts on the Viewer phone</li>
@@ -282,7 +399,7 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 </div>
 
 <div class="section">
-<h3>7. Your Rights</h3>
+<h3>8. Your Rights</h3>
 <ul>
 <li>Access the data we hold about you</li>
 <li>Request deletion of your data</li>
@@ -293,7 +410,7 @@ th { background: #451a03; color: #fcd34d; font-weight: 600; }
 </div>
 
 <div class="section">
-<h3>8. Contact</h3>
+<h3>9. Contact</h3>
 <p>For privacy-related inquiries, please contact:</p>
 <p>📧 <a href="mailto:owlyview@gmail.com">owlyview@gmail.com</a></p>
 </div>
